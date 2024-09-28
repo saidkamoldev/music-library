@@ -1,0 +1,9 @@
+# inatall
+go mod init music-library
+go get github.com/gin-gonic/gin
+go get gorm.io/gorm
+go get gorm.io/driver/postgres
+go get github.com/joho/godotenv
+
+
+chmod 644 .env
