@@ -19,7 +19,6 @@ func InitDB() {
 		log.Fatalf("Error loading .env file: %s", err)
 	}
 
-	// Ma'lumotlar bazasi ulanish stringini yaratish
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_USER"),
@@ -30,7 +29,7 @@ func InitDB() {
 		os.Getenv("DB_TIMEZONE"),
 	)
 
-	// Ma'lumotlar bazasiga ulanish
+	// connect data base
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Error connecting to database: %s", err)

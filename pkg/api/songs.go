@@ -11,18 +11,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Получить все песни из базы данных
 func GetAllSongs(c *gin.Context) {
 	var songs []model.Song
 	db := store.GetDB()
 	db.Find(&songs)
 	if err := db.First(&songs).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "database is clear"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Database is empty"})
 		return
 	}
 	c.JSON(http.StatusOK, songs)
 }
 
-// CreateSong - yangi qo'shiq qo'shish uchun handler
+// CreateSong - обработчик для добавления новой песни
 func CreateSong(c *gin.Context) {
 	var song model.Song
 	if err := c.ShouldBindJSON(&song); err != nil {
@@ -34,20 +35,21 @@ func CreateSong(c *gin.Context) {
 	result := db.Create(&song)
 	if result.Error != nil {
 		log.Printf("Error adding song: %s", result.Error)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Ma'lumot qo'shishda xato"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error adding data"})
 		return
 	}
 
 	c.JSON(http.StatusCreated, song)
 }
 
+// Получить текст песни по её ID
 func GetSongsLyrics(c *gin.Context) {
 	id := c.Param("id")
 	var song model.Song
 
 	db := store.GetDB()
 	if err := db.First(&song, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Music not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Song not found"})
 		return
 	}
 
@@ -70,26 +72,26 @@ func GetSongsLyrics(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"total":    total,
 		"page":     page,
-		"pegeSize": pageSize,
+		"pageSize": pageSize,
 		"lyrics":   lyrics[start:end],
 	})
 
 }
 
+// Получить песню по её ID
 func Getsong(c *gin.Context) {
 	id := c.Param("id")
 	var song model.Song
 	db := store.GetDB()
 
 	if err := db.First(&song, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found!"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Song not found!"})
 		return
 	}
 	c.JSON(http.StatusOK, song)
-
 }
 
-// put
+// Обновить данные песни
 func UpdateSong(c *gin.Context) {
 	id := c.Param("id")
 	var song model.Song
@@ -98,7 +100,7 @@ func UpdateSong(c *gin.Context) {
 	db := store.GetDB()
 
 	if err := db.First(&song, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Music not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Song not found"})
 		return
 	}
 
@@ -111,31 +113,31 @@ func UpdateSong(c *gin.Context) {
 	c.JSON(http.StatusOK, song)
 }
 
-//Delete
-
+// Удалить песню по её ID
 func DeleteSong(c *gin.Context) {
 	id := c.Param("id")
 
 	db := store.GetDB()
 
 	if err := db.Delete(&model.Song{}, id).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Qo'shiqni uchirishda hato"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error deleting song"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Qo'shiq uchirildi"})
+	c.JSON(http.StatusOK, gin.H{"message": "Song deleted"})
 }
 
+// Удалить все песни
 func AllDeleteSongs(c *gin.Context) {
 	db := store.GetDB()
 	var song model.Song
 
 	if err := db.First(&song).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "database is clear"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Database is empty"})
 		return
 	}
 
 	db.Where("1=1").Delete(&model.Song{})
 
-	c.JSON(http.StatusOK, gin.H{"message": "All song deleted"})
+	c.JSON(http.StatusOK, gin.H{"message": "All songs deleted"})
 }
