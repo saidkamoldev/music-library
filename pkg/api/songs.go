@@ -15,6 +15,10 @@ func GetAllSongs(c *gin.Context) {
 	var songs []model.Song
 	db := store.GetDB()
 	db.Find(&songs)
+	if err := db.First(&songs).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "database is clear"})
+		return
+	}
 	c.JSON(http.StatusOK, songs)
 }
 
@@ -47,10 +51,7 @@ func GetSongsLyrics(c *gin.Context) {
 		return
 	}
 
-	// Mantlarni ko'pletlar bilan ajratish
 	lyrics := strings.Split(song.Text, "\n\n")
-
-	// Paginatsiya logikasi
 
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "3"))
@@ -123,4 +124,18 @@ func DeleteSong(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Qo'shiq uchirildi"})
+}
+
+func AllDeleteSongs(c *gin.Context) {
+	db := store.GetDB()
+	var song model.Song
+
+	if err := db.First(&song).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "database is clear"})
+		return
+	}
+
+	db.Where("1=1").Delete(&model.Song{})
+
+	c.JSON(http.StatusOK, gin.H{"message": "All song deleted"})
 }

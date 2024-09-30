@@ -1,0 +1,13 @@
+basePath: /
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Qo'shiqlar kutubxonasi uchun API hujjatlari.
+  termsOfService: http://swagger.io/terms/
+  title: Music Library API
+  version: "1.0"
+paths: {}
+swagger: "2.0"

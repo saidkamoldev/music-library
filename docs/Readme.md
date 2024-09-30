@@ -1,9 +1,76 @@
-# inatall
-go mod init music-library
-go get github.com/gin-gonic/gin
-go get gorm.io/gorm
-go get gorm.io/driver/postgres
-go get github.com/joho/godotenv
+# Music Library API
+
+## Описание
+
+Music Library — это простое API для управления музыкальной библиотекой. API предоставляет возможности для добавления, обновления, удаления песен, а также получения текста песни. Документация API создана с использованием Swagger.
+
+## Стек технологий
+
+- [Go](https://golang.org/) — основной язык программирования
+- [Gin](https://github.com/gin-gonic/gin) — веб-фреймворк для Go
+- [GORM](https://gorm.io/) — ORM-библиотека для работы с базой данных
+- [PostgreSQL](https://www.postgresql.org/) — используемая СУБД
+- [Swagger](https://swagger.io/) — для автоматической генерации документации API
+
+## Установка и запуск
+
+### Шаг 1: Клонируйте репозиторий
+
+```bash
+git clone <URL вашего репозитория>
+cd music-library
+Шаг 2: Установка зависимостей
+Используйте go mod для установки всех зависимостей:
+
+bash
+Копировать код
+go mod download
+Шаг 3: Настройка окружения
+Создайте файл .env в корневой директории и добавьте туда следующие параметры:
+
+env
+Копировать код
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASSWORD=yourpassword
+DB_NAME=musicdb
+DB_PORT=5432
+DB_SSLMODE=disable
+DB_TIMEZONE=UTC
+Шаг 4: Запуск приложения
+Для запуска приложения выполните следующую команду:
+
+bash
+Копировать код
+go run cmd/server/main.go
+API будет доступно по адресу http://localhost:8080.
+
+Шаг 5: Генерация документации Swagger
+Чтобы сгенерировать документацию для API, выполните следующую команду:
+
+bash
+Копировать код
+swag init
+После этого откройте Swagger-интерфейс по адресу:
+
+bash
+Копировать код
+http://localhost:8080/swagger/index.html
+API Эндпоинты
+Получить все песни
+http
+Копировать код
+GET /songs
+Возвращает список всех песен в базе данных.
+
+Создать новую песню
+http
+Копировать код
+POST /songs
+Создаёт новую песню на основе перед
 
 
-chmod 644 .env
+
+
+
+
