@@ -16,7 +16,7 @@ func GetAllSongs(c *gin.Context) {
 	var songs []model.Song
 	db := store.GetDB()
 	db.Find(&songs)
-	if err := db.First(&songs).Error; err != nil {
+	if err := db.Find(&songs).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Database is empty"})
 		return
 	}
